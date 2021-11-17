@@ -28,10 +28,10 @@ public class IssueRepository {
 
     public Collection<Issue> getOpen() {
         Collection<Issue> result = new ArrayList<>();
-        for (Issue issue : getAll()) {
-            if (issue.isOpen()) {
-                result.add(issue);
-            }
+            for (Issue issue : getAll()) {
+                if (issue.isOpen()) {
+                    result.add(issue);
+                }
         }
         return result;
     }

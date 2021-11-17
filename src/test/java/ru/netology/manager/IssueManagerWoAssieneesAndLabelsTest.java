@@ -7,12 +7,11 @@ import ru.netology.repository.IssueRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class IssueManagerTest {
+class IssueManagerWoAssieneesAndLabelsTest {
 
     IssueManager manager = new IssueManager(new IssueRepository());
 
@@ -21,8 +20,8 @@ class IssueManagerTest {
     }
 
     private Issue first = new Issue(1, true, "Master", "xxx", 5, 16);
-    private Issue second = new Issue(2, false, "Butterfly", "yyy", 4, 96);
-    private Issue third = new Issue(3, true, "Worker", "zzz", 3, 3);
+    private Issue second = new Issue(2, false, "Butterfly", "yyy", 3, 96);
+    private Issue third = new Issue(3, true, "Worker", "zzz", 4, 3);
     private Issue forth = new Issue(4, true, "Master", "aaa", 1, 18);
     private Issue fifth = new Issue(5, false, "Worker", "bbb", 0, 1);
 
@@ -97,4 +96,50 @@ class IssueManagerTest {
 
         assertArrayEquals(expected, actual);
     }
+
+    @Test
+    public void shouldSortOpenByCreated(){
+
+        Issue[] expected = {forth, third, first};
+        Issue[] actual = manager.sortAll(true, Comparator.comparing(Issue::getCreatedDaysAgo));
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSortClosedByCreated(){
+
+        Issue[] expected = {fifth, second};
+        Issue[] actual = manager.sortAll(false, Comparator.comparing(Issue::getCreatedDaysAgo));
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSortOpenByUpdated(){
+
+        Issue[] expected = {third, first, forth};
+        Issue[] actual = manager.sortAll(true, Comparator.comparing(Issue::getResentlyUpdated));
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSortInAuthorsByCreatedIfOpen() {
+
+        Issue[] expected = {forth, first};
+        Issue[] actual = manager.sortInAuthors(true, "Master", Comparator.comparing(Issue::getCreatedDaysAgo));
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSortInAuthorsByUpdatedIfOpen() {
+
+        Issue[] expected = {first, forth};
+        Issue[] actual = manager.sortInAuthors(true, "Master", Comparator.comparing(Issue::getResentlyUpdated));
+
+        assertArrayEquals(expected, actual);
+    }
+
 }

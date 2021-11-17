@@ -4,13 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
+import java.util.*;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class Label {
-    private HashSet<String> component;
-    private HashSet<String> theme;
-    private HashSet<String> type;
-    private HashSet<String> thirdParty;
+    private Set<String> component = new HashSet<>();
+    private Set<String> theme = new HashSet<>();
+    private Set<String> thirdParty = new HashSet<>();
+    private Set<String> type = new HashSet<>();
+
+    public Set<String> labelsSet() {
+        Set<String> labels = new LinkedHashSet<>();
+        labels.addAll(component);
+        labels.addAll(theme);
+        labels.addAll(thirdParty);
+        labels.addAll(type);
+
+        return labels;
+    }
 }
